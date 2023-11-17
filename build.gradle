@@ -20,7 +20,12 @@ subprojects {
         mappings loom.officialMojangMappings()
         // The following line declares the yarn mappings you may select this one as well.
         // mappings "net.fabricmc:yarn:@YARN_MAPPINGS@:v2"
-        
+        implementation "net.kyori:adventure-api:4.14.0"
+        compileOnly("cc.tweaked:cc-tweaked-${rootProject.minecraft_version}-common-api:${rootProject.cct_version}")
+        compileOnly "com.github.BlueMap-Minecraft:BlueMapAPI:v${rootProject.bluemap_version}"
+        compileOnly "us.dynmap:DynmapCoreAPI:${rootProject.dynmap_version}"
+        compileOnly "maven.modrinth:pl3xmap:${rootProject.pl3xmap_version}"
+        compileOnly "xyz.jpenilla:squaremap-api:${rootProject.squaremap_version}"
     }
 }
 
@@ -39,6 +44,19 @@ allprojects {
         // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
         // See https://docs.gradle.org/current/userguide/declaring_repositories.html
         // for more information about repositories.
+        mavenCentral()
+        maven {
+           url "https://squiddev.cc/maven/"
+           content {
+             includeGroup("cc.tweaked")
+           }
+        }
+        maven { url 'https://jitpack.io' }
+        maven { url = "https://repo.mikeprimm.com/" }
+        exclusiveContent {
+            forRepository { maven { url = "https://api.modrinth.com/maven" } }
+            filter { includeGroup "maven.modrinth" }
+        }
     }
 
     tasks.withType(JavaCompile) {
