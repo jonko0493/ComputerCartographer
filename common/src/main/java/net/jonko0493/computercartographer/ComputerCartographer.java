@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ComputerCartographer
@@ -15,6 +16,13 @@ public class ComputerCartographer
 	public static final Logger Log = LoggerFactory.getLogger(MOD_ID);
 	public static void log(String message) {
 		Log.info(message);
+	}
+	public static void logWarning(String message) {
+		Log.warn(message);
+	}
+	public static void logException(Exception e) {
+		Log.error(e.getMessage());
+		Log.error(Arrays.toString(e.getStackTrace()));
 	}
 
 	public static void init() {

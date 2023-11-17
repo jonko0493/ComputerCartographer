@@ -7,6 +7,7 @@ import org.dynmap.DynmapCommonAPIListener;
 import java.util.Arrays;
 
 public class DynmapIntegration implements IMapIntegration {
+    private final String name = "dynmap";
     private static DynmapCommonAPI dynmapAPI;
     private boolean enabled = false;
 
@@ -19,8 +20,7 @@ public class DynmapIntegration implements IMapIntegration {
                 }
             });
         } catch (Exception e) {
-            ComputerCartographer.log(e.getMessage());
-            ComputerCartographer.log(Arrays.toString(e.getStackTrace()));
+            ComputerCartographer.logException(e);
         }
     }
 
@@ -28,5 +28,85 @@ public class DynmapIntegration implements IMapIntegration {
     public boolean init() {
         enabled = dynmapAPI != null;
         return enabled;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getCurrentWorld() {
+        return "";
+    }
+
+    @Override
+    public boolean setCurrentWorld(String world) {
+        return false;
+    }
+
+    @Override
+    public boolean addMarkerSet() {
+        return false;
+    }
+
+    @Override
+    public boolean removeMarkerSet() {
+        return false;
+    }
+
+    @Override
+    public String[] getMarkerSets() {
+        return new String[0];
+    }
+
+    @Override
+    public boolean clearMarkerSet() {
+        return false;
+    }
+
+    @Override
+    public boolean addPOIMarker() {
+        return false;
+    }
+
+    @Override
+    public boolean removePOIMarker() {
+        return false;
+    }
+
+    @Override
+    public boolean editPOIMarker() {
+        return false;
+    }
+
+    @Override
+    public boolean addAreaMarker() {
+        return false;
+    }
+
+    @Override
+    public boolean removeAreaMarker() {
+        return false;
+    }
+
+    @Override
+    public boolean editAreaMarker() {
+        return false;
+    }
+
+    @Override
+    public boolean addLineMarker() {
+        return false;
+    }
+
+    @Override
+    public boolean editLineMarker() {
+        return false;
+    }
+
+    @Override
+    public boolean removeLineMarker() {
+        return false;
     }
 }
