@@ -5,7 +5,7 @@
 
   "name": "Cartography Peripheral",
   "description": "A mod that adds a peripheral to Computer Craft: Tweaked that allows interfacing with various mapping mods (Dynmap, Bluemap, Pl3xmap, and Squaremap)",
-  "authors": [],
+  "authors": ["Jonko0493"],
   "contact": {},
 
   "license": "All Rights Reserved",
@@ -15,6 +15,7 @@
   "entrypoints": {},
   "depends": {
     "fabricloader": ">=0.14.24",
-    "minecraft": ">=1.20.1"
+    "minecraft": ">=1.20.1",
+    "computercraft": ">=1.108.4"
   }
 }

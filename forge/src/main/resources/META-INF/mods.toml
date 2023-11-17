@@ -64,3 +64,15 @@ A mod that adds a peripheral to Computer Craft: Tweaked that allows interfacing 
    versionRange="[1.20.1,1.21)"
    ordering="NONE"
    side="BOTH"
+[[dependencies.cartography_peripheral]]
+   modId="architectury"
+   mandatory=true
+   versionRange="[9.1.12,)"
+   ordering="NONE"
+   side="BOTH"
+[[dependencies.cartography_peripheral]]
+   modId="computercraft"
+   mandatory=true
+   versionRange="[1.108.4,)"
+   ordering="NONE"
+   side="BOTH"
