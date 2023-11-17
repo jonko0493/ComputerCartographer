@@ -1,6 +1,5 @@
-package net.jonko0493.cartographyperipheral.integration;
+package net.jonko0493.computercartographer.integration;
 
 public interface IMapIntegration {
     boolean init();
-
 }

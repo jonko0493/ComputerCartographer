@@ -1,6 +1,6 @@
-package net.jonko0493.cartographyperipheral.integration;
+package net.jonko0493.computercartographer.integration;
 
-import net.jonko0493.cartographyperipheral.CartographyPeripheral;
+import net.jonko0493.computercartographer.ComputerCartographer;
 import xyz.jpenilla.squaremap.api.Squaremap;
 import xyz.jpenilla.squaremap.api.SquaremapProvider;
 
@@ -14,7 +14,7 @@ public class SquaremapIntegration implements IMapIntegration {
             api = SquaremapProvider.get();
             enabled = true;
         } catch (Exception e) {
-            CartographyPeripheral.Log.atInfo().log("Squaremap is not loaded.");
+            ComputerCartographer.log("Squaremap is not loaded.");
             enabled = false;
         }
         return enabled;

@@ -11,11 +11,11 @@ loaderVersion="[47,)" #mandatory This is typically bumped every Minecraft versio
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
 license="MIT License"
 # A URL to refer people to when problems occur with this mod
-issueTrackerURL="https://github.com/jonko0493/CartographyPeripheral/issues"
+issueTrackerURL="https://github.com/jonko0493/ComputerCartographer/issues"
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
 # The modid of the mod
-modId="cartography_peripheral" #mandatory
+modId="computer_cartographer" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 # ${version} will substitute the value of the Implementation-Version as read from the mod's JAR file metadata
 # see the associated build.gradle script for how to populate this completely automatically during a build
@@ -45,7 +45,7 @@ description='''
 A mod that adds a peripheral to Computer Craft: Tweaked that allows interfacing with various mapping mods (Dynmap, Bluemap, Pl3xmap, and Squaremap)
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.cartography_peripheral]] #optional
+[[dependencies.computer_cartographer]] #optional
    # the modid of the dependency
    modId="forge" #mandatory
    # Does this dependency have to exist - if not, ordering below must be specified
@@ -57,20 +57,20 @@ A mod that adds a peripheral to Computer Craft: Tweaked that allows interfacing 
    # Side this dependency is applied on - BOTH, CLIENT or SERVER
    side="BOTH"
 # Here's another dependency
-[[dependencies.cartography_peripheral]]
+[[dependencies.computer_cartographer]]
    modId="minecraft"
    mandatory=true
    # This version range declares a minimum of the current minecraft version up to but not including the next major version
    versionRange="[1.20.1,1.21)"
    ordering="NONE"
    side="BOTH"
-[[dependencies.cartography_peripheral]]
+[[dependencies.computer_cartographer]]
    modId="architectury"
    mandatory=true
    versionRange="[9.1.12,)"
    ordering="NONE"
    side="BOTH"
-[[dependencies.cartography_peripheral]]
+[[dependencies.computer_cartographer]]
    modId="computercraft"
    mandatory=true
    versionRange="[1.108.4,)"

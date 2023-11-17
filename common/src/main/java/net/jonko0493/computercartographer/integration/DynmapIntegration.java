@@ -1,7 +1,10 @@
-package net.jonko0493.cartographyperipheral.integration;
+package net.jonko0493.computercartographer.integration;
 
+import net.jonko0493.computercartographer.ComputerCartographer;
 import org.dynmap.DynmapCommonAPI;
 import org.dynmap.DynmapCommonAPIListener;
+
+import java.util.Arrays;
 
 public class DynmapIntegration implements IMapIntegration {
     private static DynmapCommonAPI dynmapAPI;
@@ -16,7 +19,8 @@ public class DynmapIntegration implements IMapIntegration {
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
+            ComputerCartographer.log(e.getMessage());
+            ComputerCartographer.log(Arrays.toString(e.getStackTrace()));
         }
     }
 

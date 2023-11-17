@@ -1,6 +1,6 @@
-package net.jonko0493.cartographyperipheral.integration;
+package net.jonko0493.computercartographer.integration;
 
-import net.jonko0493.cartographyperipheral.CartographyPeripheral;
+import net.jonko0493.computercartographer.ComputerCartographer;
 import net.pl3x.map.core.Pl3xMap;
 
 public class Pl3xMapIntegration implements IMapIntegration {
@@ -14,7 +14,7 @@ public class Pl3xMapIntegration implements IMapIntegration {
             pl3xMapApi = Pl3xMap.api();
             enabled = true;
         } catch (Exception e) {
-            CartographyPeripheral.Log.atInfo().log("Pl3xMap is not loaded");
+            ComputerCartographer.log("Pl3xMap is not loaded");
             enabled = false;
         }
         return enabled;

@@ -1,6 +1,6 @@
-package net.jonko0493.cartographyperipheral.integration;
+package net.jonko0493.computercartographer.integration;
 
-import net.jonko0493.cartographyperipheral.CartographyPeripheral;
+import net.jonko0493.computercartographer.ComputerCartographer;
 import de.bluecolored.bluemap.api.BlueMapAPI;
 
 public class BlueMapIntegration implements IMapIntegration {
@@ -13,7 +13,7 @@ public class BlueMapIntegration implements IMapIntegration {
             BlueMapAPI.getInstance().ifPresent(api -> this.api = api);
             enabled = true;
         } catch (NoClassDefFoundError | IllegalStateException ignore) {
-            CartographyPeripheral.Log.atInfo().log("BlueMap is not loaded.");
+            ComputerCartographer.log("BlueMap is not loaded.");
             enabled = false;
         }
         return enabled;
