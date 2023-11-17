@@ -8,14 +8,24 @@
   "authors": ["Jonko0493"],
   "contact": {},
 
-  "license": "All Rights Reserved",
+  "license": "MIT License",
   "icon": "icon.png",
 
   "environment": "*",
-  "entrypoints": {},
+  "entrypoints": {
+    "main": [
+      "net.jonko0493.cartographyperipheral.fabric.CartographyPeripheralFabric"
+    ]
+  },
   "depends": {
     "fabricloader": ">=0.14.24",
     "minecraft": ">=1.20.1",
     "computercraft": ">=1.108.4"
+  },
+  "suggests": {
+    "bluemap": ">=3.17",
+    "dynmap": ">=3.6",
+    "pl3xmap": "*",
+    "squaremap": ">=1.2.0"
   }
 }

@@ -1,7 +1,7 @@
-package com.jonko0493.cartographyperipheral;
+package net.jonko0493.cartographyperipheral;
 
-import com.jonko0493.cartographyperipheral.integration.*;
 import dev.architectury.platform.Platform;
+import net.jonko0493.cartographyperipheral.integration.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

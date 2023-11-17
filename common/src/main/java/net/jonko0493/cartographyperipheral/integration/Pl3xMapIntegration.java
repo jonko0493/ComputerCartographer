@@ -1,6 +1,6 @@
-package com.jonko0493.cartographyperipheral.integration;
+package net.jonko0493.cartographyperipheral.integration;
 
-import com.jonko0493.cartographyperipheral.CartographyPeripheral;
+import net.jonko0493.cartographyperipheral.CartographyPeripheral;
 import net.pl3x.map.core.Pl3xMap;
 
 public class Pl3xMapIntegration implements IMapIntegration {

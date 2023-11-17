@@ -1,7 +1,7 @@
-package com.jonko0493.cartographyperipheral.forge;
+package net.jonko0493.cartographyperipheral.forge;
 
 import dev.architectury.platform.forge.EventBuses;
-import com.jonko0493.cartographyperipheral.CartographyPeripheral;
+import net.jonko0493.cartographyperipheral.CartographyPeripheral;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 

@@ -1,4 +1,4 @@
-package com.jonko0493.cartographyperipheral.integration;
+package net.jonko0493.cartographyperipheral.integration;
 
 import org.dynmap.DynmapCommonAPI;
 import org.dynmap.DynmapCommonAPIListener;
