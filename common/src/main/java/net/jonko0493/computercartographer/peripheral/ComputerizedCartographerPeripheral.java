@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class CartographerPeripheral implements IPeripheral {
+public class ComputerizedCartographerPeripheral implements IPeripheral {
     @Nullable
     private IMapIntegration currentIntegration;
 
@@ -32,17 +32,17 @@ public class CartographerPeripheral implements IPeripheral {
     }
 
     @LuaFunction
-    public String[] getAvailableIntegrations() {
+    public final String[] getAvailableIntegrations() {
         return ComputerCartographer.integrations.stream().map(IMapIntegration::getName).toArray(String[]::new);
     }
 
     @LuaFunction
-    public String getCurrentIntegration() {
+    public final String getCurrentIntegration() {
         return currentIntegration == null ? null : currentIntegration.getName();
     }
 
     @LuaFunction
-    public boolean setCurrentIntegration(String integrationName) {
+    public final boolean setCurrentIntegration(String integrationName) {
         AtomicBoolean success = new AtomicBoolean(false);
         ComputerCartographer.integrations.stream()
                 .filter(i -> i.getName().equalsIgnoreCase(integrationName))
@@ -62,7 +62,7 @@ public class CartographerPeripheral implements IPeripheral {
     }
 
     @LuaFunction
-    public String getCurrentWorld() {
+    public final String getCurrentWorld() {
         if (currentIntegration == null) {
             return null;
         }
@@ -70,7 +70,7 @@ public class CartographerPeripheral implements IPeripheral {
     }
 
     @LuaFunction
-    public boolean setCurrentWorld(String world) {
+    public final boolean setCurrentWorld(String world) {
         if (currentIntegration == null) {
             return false;
         }

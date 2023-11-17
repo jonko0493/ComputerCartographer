@@ -2,9 +2,9 @@ package net.jonko0493.computercartographer.block;
 
 import net.minecraft.world.level.block.Block;
 
-public class ComputerCartographerBlock extends Block {
+public class ComputerizedCartographerBlock extends Block {
 
-    public ComputerCartographerBlock(Properties properties) {
+    public ComputerizedCartographerBlock(Properties properties) {
         super(properties);
     }
 }
