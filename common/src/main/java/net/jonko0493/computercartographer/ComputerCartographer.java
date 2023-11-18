@@ -1,13 +1,25 @@
 package net.jonko0493.computercartographer;
 
 import dev.architectury.platform.Platform;
+import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.RegistrySupplier;
+import net.jonko0493.computercartographer.block.ComputerizedCartographerBlock;
+import net.jonko0493.computercartographer.block.ComputerizedCartographerBlockEntity;
 import net.jonko0493.computercartographer.integration.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.function.Supplier;
 
 public class ComputerCartographer
 {
@@ -23,6 +35,33 @@ public class ComputerCartographer
 	public static void logException(Exception e) {
 		Log.error(e.getMessage());
 		Log.error(Arrays.toString(e.getStackTrace()));
+	}
+
+	public static DeferredRegister<Item> ITEMS = DeferredRegister.create(MOD_ID, RegistryKeys.ITEM);
+	public static DeferredRegister<Block> BLOCKS = DeferredRegister.create(MOD_ID, RegistryKeys.BLOCK);
+	public static Map<RegistrySupplier<? extends Block>, Item.Settings> BLOCK_ITEMS = new HashMap<>();
+	public static DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(MOD_ID, RegistryKeys.BLOCK_ENTITY_TYPE);
+	public static final DeferredRegister<ItemGroup> TABS = DeferredRegister.create("computercraft", RegistryKeys.ITEM_GROUP);
+
+	public static RegistrySupplier<ComputerizedCartographerBlock> COMPUTERIZED_CARTOGRAPHER_BLOCK = registerBlockItem("computerized_cartographer_block", () -> new ComputerizedCartographerBlock(AbstractBlock.Settings.create().hardness(1.3f)));
+	public static RegistrySupplier<BlockEntityType<ComputerizedCartographerBlockEntity>> COMPUTERIZED_CARTOGRAPHER_BLOCK_ENTITY = BLOCK_ENTITIES.register(new Identifier(MOD_ID, "computerized_cartographer_block_entity"), () -> BlockEntityType.Builder.create(ComputerizedCartographerBlockEntity::new, COMPUTERIZED_CARTOGRAPHER_BLOCK.get()).build(null));
+
+	public static <T extends Block> RegistrySupplier<T> registerBlock(String name, Supplier<T> block) {
+		return BLOCKS.register(new Identifier(MOD_ID, name), block);
+	}
+
+	public static <T extends Item> RegistrySupplier<T> registerItem(String name, Supplier<T> item) {
+		return ITEMS.register(new Identifier(MOD_ID, name), item);
+	}
+
+	public static <T extends Block> RegistrySupplier<T> registerBlockItem(String name, Supplier<T> block) {
+		return registerBlockItem(name, block, new Item.Settings());
+	}
+
+	public static <T extends Block> RegistrySupplier<T> registerBlockItem(String name, Supplier<T> block, Item.Settings props) {
+		RegistrySupplier<T> blockRegistered = registerBlock(name, block);
+		BLOCK_ITEMS.put(blockRegistered, props);
+		return blockRegistered;
 	}
 
 	public static void init() {
@@ -55,5 +94,13 @@ public class ComputerCartographer
 				integrations.add(squaremapIntegration);
 			}
 		}
+
+		BLOCKS.register();
+		BLOCK_ITEMS.forEach((block, itemprops) -> {
+			BlockItem blockItem = new BlockItem(block.get(), itemprops);
+			ITEMS.register(block.getId(), () -> blockItem);
+//			CreativeTabRegistry.append(TABS.register(block.getId(), () -> TABS.), blockItem);
+		});
+		ITEMS.register();
 	}
 }

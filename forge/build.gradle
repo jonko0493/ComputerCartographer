@@ -19,6 +19,8 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 
+    modApi("cc.tweaked:cc-tweaked-${rootProject.minecraft_version}-forge-api:${rootProject.cct_version}")
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }

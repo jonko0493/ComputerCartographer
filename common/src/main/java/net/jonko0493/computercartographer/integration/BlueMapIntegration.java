@@ -1,9 +1,8 @@
 package net.jonko0493.computercartographer.integration;
 
-import de.bluecolored.bluemap.api.BlueMapMap;
-import libs.org.wildfly.common.function.ExceptionPredicate;
-import net.jonko0493.computercartographer.ComputerCartographer;
 import de.bluecolored.bluemap.api.BlueMapAPI;
+import de.bluecolored.bluemap.api.BlueMapMap;
+import net.jonko0493.computercartographer.ComputerCartographer;
 
 public class BlueMapIntegration implements IMapIntegration {
     private final String name = "bluemap";
@@ -14,16 +13,18 @@ public class BlueMapIntegration implements IMapIntegration {
     @Override
     public boolean init() {
         try {
-            BlueMapAPI.getInstance().ifPresent(api -> this.api = api);
-            api.getMap("overworld").ifPresent(map -> currentMap = map);
-            if (currentMap == null) {
-                api.getMaps().stream().findFirst().ifPresent(map -> currentMap = map);
-            }
-            enabled = true;
-            if (currentMap == null) {
-                ComputerCartographer.logWarning("No BlueMap maps found! Disabling BlueMap integration");
-                enabled = false;
-            }
+            BlueMapAPI.getInstance().ifPresent(api -> {
+                this.api = api;
+                api.getMap("overworld").ifPresent(map -> currentMap = map);
+                if (currentMap == null) {
+                    api.getMaps().stream().findFirst().ifPresent(map -> currentMap = map);
+                }
+                enabled = true;
+                if (currentMap == null) {
+                    ComputerCartographer.logWarning("No BlueMap maps found! Disabling BlueMap integration");
+                    enabled = false;
+                }
+            });
         } catch (NoClassDefFoundError | IllegalStateException ignore) {
             ComputerCartographer.log("BlueMap is not loaded.");
             enabled = false;

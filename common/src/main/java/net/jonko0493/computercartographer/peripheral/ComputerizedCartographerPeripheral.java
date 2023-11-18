@@ -4,12 +4,19 @@ import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import net.jonko0493.computercartographer.ComputerCartographer;
+import net.jonko0493.computercartographer.block.ComputerizedCartographerBlockEntity;
 import net.jonko0493.computercartographer.integration.IMapIntegration;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ComputerizedCartographerPeripheral implements IPeripheral {
+    private final ComputerizedCartographerBlockEntity blockEntity;
+
+    public ComputerizedCartographerPeripheral(ComputerizedCartographerBlockEntity blockEntity) {
+        this.blockEntity = blockEntity;
+    }
+
     @Nullable
     private IMapIntegration currentIntegration;
 
