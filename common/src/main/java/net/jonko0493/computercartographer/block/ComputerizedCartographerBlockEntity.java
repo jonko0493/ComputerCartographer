@@ -8,11 +8,10 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.math.BlockPos;
 
 public class ComputerizedCartographerBlockEntity extends BlockEntity {
-    private ComputerizedCartographerPeripheral peripheral;
+    private final ComputerizedCartographerPeripheral peripheral = new ComputerizedCartographerPeripheral(this);
 
     public ComputerizedCartographerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-        peripheral = new ComputerizedCartographerPeripheral(this);
     }
 
     public ComputerizedCartographerBlockEntity(BlockPos pos, BlockState state) {

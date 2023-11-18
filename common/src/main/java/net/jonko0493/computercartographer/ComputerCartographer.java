@@ -1,6 +1,7 @@
 package net.jonko0493.computercartographer;
 
 import dev.architectury.platform.Platform;
+import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.jonko0493.computercartographer.block.ComputerizedCartographerBlock;
@@ -43,7 +44,7 @@ public class ComputerCartographer
 	public static DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(MOD_ID, RegistryKeys.BLOCK_ENTITY_TYPE);
 	public static final DeferredRegister<ItemGroup> TABS = DeferredRegister.create("computercraft", RegistryKeys.ITEM_GROUP);
 
-	public static RegistrySupplier<ComputerizedCartographerBlock> COMPUTERIZED_CARTOGRAPHER_BLOCK = registerBlockItem("computerized_cartographer_block", () -> new ComputerizedCartographerBlock(AbstractBlock.Settings.create().hardness(1.3f)));
+	public static RegistrySupplier<ComputerizedCartographerBlock> COMPUTERIZED_CARTOGRAPHER_BLOCK = registerBlockItem("computerized_cartographer", () -> new ComputerizedCartographerBlock(AbstractBlock.Settings.create().hardness(1.3f)));
 	public static RegistrySupplier<BlockEntityType<ComputerizedCartographerBlockEntity>> COMPUTERIZED_CARTOGRAPHER_BLOCK_ENTITY = BLOCK_ENTITIES.register(new Identifier(MOD_ID, "computerized_cartographer_block_entity"), () -> BlockEntityType.Builder.create(ComputerizedCartographerBlockEntity::new, COMPUTERIZED_CARTOGRAPHER_BLOCK.get()).build(null));
 
 	public static <T extends Block> RegistrySupplier<T> registerBlock(String name, Supplier<T> block) {
@@ -65,7 +66,7 @@ public class ComputerCartographer
 	}
 
 	public static void init() {
-		Log.atInfo().log("Attempting to add cartography peripheral integrations...");
+		Log.atInfo().log("Attempting to add computer cartographer integrations...");
 		if (Platform.isModLoaded("bluemap")) {
 			BlueMapIntegration blueMapIntegration = new BlueMapIntegration();
 			if (blueMapIntegration.init()) {
@@ -102,5 +103,6 @@ public class ComputerCartographer
 //			CreativeTabRegistry.append(TABS.register(block.getId(), () -> TABS.), blockItem);
 		});
 		ITEMS.register();
+		BLOCK_ENTITIES.register();
 	}
 }

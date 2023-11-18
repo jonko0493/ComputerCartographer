@@ -3,7 +3,7 @@
   "id": "computer_cartographer",
   "version": "${version}",
 
-  "name": "Cartography Peripheral",
+  "name": "Computer Cartographer",
   "description": "A mod that adds a peripheral to Computer Craft: Tweaked that allows interfacing with various mapping mods (Dynmap, Bluemap, Pl3xmap, and Squaremap)",
   "authors": [
     {
