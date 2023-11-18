@@ -14,11 +14,12 @@ public class ComputerCartographerFabric implements ModInitializer {
 
     public static void registerPeripherals() {
         PeripheralLookup.get().registerForBlocks((world, pos, state, blockEntity, context) -> {
-           if (blockEntity instanceof ComputerizedCartographerBlockEntity) {
+
+            if (blockEntity instanceof ComputerizedCartographerBlockEntity) {
                return ((ComputerizedCartographerBlockEntity)blockEntity).getPeripheral();
-           } else {
+            } else {
                return null;
-           }
+}
         });
     }
 }
