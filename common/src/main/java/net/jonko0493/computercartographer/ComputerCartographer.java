@@ -1,8 +1,10 @@
 package net.jonko0493.computercartographer;
 
+import com.google.common.base.Suppliers;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.RegistrarManager;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.jonko0493.computercartographer.block.ComputerizedCartographerBlock;
 import net.jonko0493.computercartographer.block.ComputerizedCartographerBlockEntity;
@@ -97,12 +99,12 @@ public class ComputerCartographer
 		}
 
 		BLOCKS.register();
+		BLOCK_ENTITIES.register();
 		BLOCK_ITEMS.forEach((block, itemprops) -> {
 			BlockItem blockItem = new BlockItem(block.get(), itemprops);
 			ITEMS.register(block.getId(), () -> blockItem);
 //			CreativeTabRegistry.append(TABS.register(block.getId(), () -> TABS.), blockItem);
 		});
 		ITEMS.register();
-		BLOCK_ENTITIES.register();
 	}
 }
