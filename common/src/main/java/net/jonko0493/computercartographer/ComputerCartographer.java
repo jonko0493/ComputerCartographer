@@ -1,6 +1,7 @@
 package net.jonko0493.computercartographer;
 
 import dev.architectury.platform.Platform;
+import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.jonko0493.computercartographer.block.ComputerizedCartographerBlock;
@@ -12,8 +13,10 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryOps;
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +72,7 @@ public class ComputerCartographer
 		BLOCK_ITEMS.forEach((block, itemprops) -> {
 			BlockItem blockItem = new BlockItem(block.get(), itemprops);
 			ITEMS.register(block.getId(), () -> blockItem);
-//			CreativeTabRegistry.append(TABS.register(block.getId(), () -> TABS.), blockItem);
+			CreativeTabRegistry.append(RegistryKey.of(RegistryKeys.ITEM_GROUP, new Identifier("computercraft:tab")), blockItem);
 		});
 		ITEMS.register();
 		BLOCK_ENTITIES.register();
