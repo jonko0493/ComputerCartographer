@@ -13,6 +13,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryOps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,6 +64,18 @@ public class ComputerCartographer
 	}
 
 	public static void init() {
+		initIntegrations();
+		BLOCKS.register();
+		BLOCK_ITEMS.forEach((block, itemprops) -> {
+			BlockItem blockItem = new BlockItem(block.get(), itemprops);
+			ITEMS.register(block.getId(), () -> blockItem);
+//			CreativeTabRegistry.append(TABS.register(block.getId(), () -> TABS.), blockItem);
+		});
+		ITEMS.register();
+		BLOCK_ENTITIES.register();
+	}
+
+	public static void initIntegrations() {
 		Log.atInfo().log("Attempting to add computer cartographer integrations...");
 		if (Platform.isModLoaded("bluemap")) {
 			BlueMapIntegration blueMapIntegration = new BlueMapIntegration();
@@ -92,14 +105,5 @@ public class ComputerCartographer
 				integrations.add(squaremapIntegration);
 			}
 		}
-
-		BLOCKS.register();
-		BLOCK_ITEMS.forEach((block, itemprops) -> {
-			BlockItem blockItem = new BlockItem(block.get(), itemprops);
-			ITEMS.register(block.getId(), () -> blockItem);
-//			CreativeTabRegistry.append(TABS.register(block.getId(), () -> TABS.), blockItem);
-		});
-		ITEMS.register();
-		BLOCK_ENTITIES.register();
 	}
 }

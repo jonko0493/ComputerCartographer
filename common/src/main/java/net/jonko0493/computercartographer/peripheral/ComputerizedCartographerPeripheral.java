@@ -33,6 +33,9 @@ public class ComputerizedCartographerPeripheral implements IPeripheral {
     @Override
     public void attach(IComputerAccess computer) {
         // If there is only one integration available, we should default to using it
+        if (ComputerCartographer.integrations.isEmpty()) {
+            ComputerCartographer.initIntegrations();
+        }
         if (ComputerCartographer.integrations.size() == 1) {
             currentIntegration = ComputerCartographer.integrations.get(0);
         }
