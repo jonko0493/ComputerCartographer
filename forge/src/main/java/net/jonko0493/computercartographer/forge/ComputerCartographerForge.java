@@ -1,5 +1,6 @@
 package net.jonko0493.computercartographer.forge;
 
+import dan200.computercraft.api.ForgeComputerCraftAPI;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dev.architectury.platform.forge.EventBuses;
 import net.jonko0493.computercartographer.ComputerCartographer;
@@ -19,5 +20,7 @@ public class ComputerCartographerForge {
 		// Submit our event bus to let architectury register our content on the right time
         EventBuses.registerModEventBus(ComputerCartographer.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         ComputerCartographer.init();
+
+        ForgeComputerCraftAPI.registerPeripheralProvider(new ComputerCartographerPeripheralProviderForge());
     }
 }

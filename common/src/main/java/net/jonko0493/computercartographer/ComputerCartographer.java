@@ -15,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryOps;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,8 +69,7 @@ public class ComputerCartographer
 		initIntegrations();
 		BLOCKS.register();
 		BLOCK_ITEMS.forEach((block, itemprops) -> {
-			BlockItem blockItem = new BlockItem(block.get(), itemprops);
-			ITEMS.register(block.getId(), () -> blockItem);
+			RegistrySupplier<BlockItem> blockItem = ITEMS.register(block.getId(), () -> new BlockItem(block.get(), itemprops));
 			CreativeTabRegistry.append(RegistryKey.of(RegistryKeys.ITEM_GROUP, new Identifier("computercraft:tab")), blockItem);
 		});
 		ITEMS.register();

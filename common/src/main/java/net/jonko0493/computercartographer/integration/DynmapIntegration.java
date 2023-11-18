@@ -36,22 +36,27 @@ public class DynmapIntegration implements IMapIntegration {
     }
 
     @Override
-    public String getCurrentWorld() {
+    public String[] getAvailableMaps() {
+        return new String[0];
+    }
+
+    @Override
+    public String getCurrentMap() {
         return "";
     }
 
     @Override
-    public boolean setCurrentWorld(String world) {
+    public boolean setCurrentMap(String world) {
         return false;
     }
 
     @Override
-    public boolean addMarkerSet() {
+    public boolean addMarkerSet(String setName, String label) {
         return false;
     }
 
     @Override
-    public boolean removeMarkerSet() {
+    public boolean removeMarkerSet(String setName) {
         return false;
     }
 
@@ -61,17 +66,17 @@ public class DynmapIntegration implements IMapIntegration {
     }
 
     @Override
-    public boolean clearMarkerSet() {
+    public boolean clearMarkerSet(String setName) {
         return false;
     }
 
     @Override
-    public boolean addPOIMarker() {
+    public boolean addPOIMarker(String markerSet, String id, String label, String detail, String icon, double x, double y, double z) {
         return false;
     }
 
     @Override
-    public boolean removePOIMarker() {
+    public boolean removePOIMarker(String markerSet, String id) {
         return false;
     }
 
