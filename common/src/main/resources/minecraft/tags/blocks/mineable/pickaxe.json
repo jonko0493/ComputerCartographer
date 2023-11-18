@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "computer-cartographer:computerized_cartographer_block"
+    "computer_cartographer:computerized_cartographer"
   ]
 }

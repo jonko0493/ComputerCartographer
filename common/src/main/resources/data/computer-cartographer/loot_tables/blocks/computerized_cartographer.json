@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "computer-cartographer:computerized_cartographer_block"
+          "name": "computer_cartographer:computerized_cartographer"
         }
       ]
     }
