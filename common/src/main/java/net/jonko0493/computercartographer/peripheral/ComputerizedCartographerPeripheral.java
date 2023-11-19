@@ -57,6 +57,11 @@ public class ComputerizedCartographerPeripheral implements IPeripheral {
     }
 
     @LuaFunction
+    public final void refreshIntegrations() {
+        ComputerCartographer.initIntegrations();
+    }
+
+    @LuaFunction
     public final boolean setCurrentIntegration(String integrationName) {
         AtomicBoolean success = new AtomicBoolean(false);
         ComputerCartographer.integrations.stream()

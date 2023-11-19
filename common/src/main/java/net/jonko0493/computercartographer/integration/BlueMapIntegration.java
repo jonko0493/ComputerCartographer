@@ -248,7 +248,7 @@ public class BlueMapIntegration implements IMapIntegration {
             try {
                 markerSet = "cc_" + markerSet;
                 if (currentMap.getMarkerSets().containsKey(markerSet)) {
-                    Shape circle = Shape.createCircle(x, z, radius, (int)Math.max(4, Math.min(200, radius)));
+                    Shape circle = Shape.createCircle(x, z, radius, (int)Math.max(10, Math.min(100, radius)));
                     ShapeMarker circleMarker = ShapeMarker.builder()
                             .shape(circle, 63)
                             .centerPosition()
@@ -325,6 +325,7 @@ public class BlueMapIntegration implements IMapIntegration {
                                 .depthTestEnabled(false)
                                 .build();
                         currentMap.getMarkerSets().get(markerSet).put(id, shapeMarker);
+                        return true;
                     } else {
                         ExtrudeMarker extrudeMarker = ExtrudeMarker.builder()
                                 .shape(shapeBuilder.build(),
@@ -339,6 +340,7 @@ public class BlueMapIntegration implements IMapIntegration {
                                 .depthTestEnabled(false)
                                 .build();
                         currentMap.getMarkerSets().get(markerSet).put(id, extrudeMarker);
+                        return true;
                     }
                 } else {
                     ComputerCartographer.logWarning("Attempted to add area marker to non-existent set '" + markerSet + "'");
