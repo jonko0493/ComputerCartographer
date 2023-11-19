@@ -248,7 +248,7 @@ public class BlueMapIntegration implements IMapIntegration {
             try {
                 markerSet = "cc_" + markerSet;
                 if (currentMap.getMarkerSets().containsKey(markerSet)) {
-                    Shape circle = Shape.createCircle(x, z, radius, (int)Math.min(4, Math.max(200, radius)));
+                    Shape circle = Shape.createCircle(x, z, radius, (int)Math.max(4, Math.min(200, radius)));
                     ShapeMarker circleMarker = ShapeMarker.builder()
                             .shape(circle, 63)
                             .centerPosition()
