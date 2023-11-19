@@ -1,9 +1,12 @@
 package net.jonko0493.computercartographer.integration;
 
+import com.flowpowered.math.vector.Vector3d;
 import net.jonko0493.computercartographer.ComputerCartographer;
 import org.dynmap.DynmapCommonAPI;
 import org.dynmap.DynmapCommonAPIListener;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DynmapIntegration implements IMapIntegration {
@@ -76,42 +79,27 @@ public class DynmapIntegration implements IMapIntegration {
     }
 
     @Override
-    public boolean removePOIMarker(String markerSet, String id) {
+    public boolean addLineMarker(String markerSet, String id, String label, String detail, Color color, int width, ArrayList<Vector3d> points) {
         return false;
     }
 
     @Override
-    public boolean editPOIMarker() {
+    public boolean addCircleMarker(String markerSet, String id, String label, String detail, Color lineColor, Color fillColor, int lineWidth, double x, double z, double radius) {
         return false;
     }
 
     @Override
-    public boolean addAreaMarker() {
+    public boolean addRectangleMarker(String markerSet, String id, String label, String detail, Color lineColor, Color fillColor, int lineWidth, double x1, double z1, double x2, double z2) {
         return false;
     }
 
     @Override
-    public boolean removeAreaMarker() {
+    public boolean addAreaMarker(String markerSet, String id, String label, String detail, Color lineColor, Color fillColor, int lineWidth, ArrayList<Vector3d> points) {
         return false;
     }
 
     @Override
-    public boolean editAreaMarker() {
-        return false;
-    }
-
-    @Override
-    public boolean addLineMarker() {
-        return false;
-    }
-
-    @Override
-    public boolean editLineMarker() {
-        return false;
-    }
-
-    @Override
-    public boolean removeLineMarker() {
+    public boolean removeMarker(String markerSet, String id) {
         return false;
     }
 }

@@ -1,5 +1,6 @@
 package net.jonko0493.computercartographer.peripheral;
 
+import com.flowpowered.math.vector.Vector3d;
 import dan200.computercraft.api.lua.IArguments;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IComputerAccess;
@@ -7,8 +8,11 @@ import dan200.computercraft.api.peripheral.IPeripheral;
 import net.jonko0493.computercartographer.ComputerCartographer;
 import net.jonko0493.computercartographer.block.ComputerizedCartographerBlockEntity;
 import net.jonko0493.computercartographer.integration.IMapIntegration;
+import net.jonko0493.computercartographer.integration.IntegrationHelper;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ComputerizedCartographerPeripheral implements IPeripheral {
@@ -159,10 +163,100 @@ public class ComputerizedCartographerPeripheral implements IPeripheral {
     }
 
     @LuaFunction
-    public final boolean removePOIMarker(String markerSet, String markerId) {
+    public final boolean removeMarker(String markerSet, String markerId) {
         if (currentIntegration == null) {
             return false;
         }
-        return currentIntegration.removePOIMarker(markerSet, markerId);
+        return currentIntegration.removeMarker(markerSet, markerId);
+    }
+
+    // Arguments:
+    // 0: markerSet (String)
+    // 1: markerId (String)
+    // 2: label (String)
+    // 3: detail (String)
+    // 4: color (String, RGBA hex code)
+    // 5: color alpha (double, 0.0-1.0)
+    // 6: width (int)
+    // 7: points (table, interpreted as ArrayList<Vector3d>)
+    @LuaFunction
+    public final boolean addLineMarker(IArguments arguments) {
+        if (currentIntegration == null) {
+            return false;
+        }
+        try {
+            String markerSet = arguments.getString(0);
+            String markerId = arguments.getString(1);
+            String label = arguments.getString(2);
+            String detail = arguments.getString(3);
+            Color color = Color.decode(arguments.getString(4));
+            color = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int)(arguments.getDouble(5) * 255));
+            int width = arguments.getInt(6);
+            ArrayList<Vector3d> points = IntegrationHelper.parsePoints(arguments.getTable(7));
+
+            return currentIntegration.addLineMarker(markerSet, markerId, label, detail, color, width, points);
+        } catch (Exception e) {
+            ComputerCartographer.logException(e);
+        }
+        return false;
+    }
+
+    @LuaFunction
+    public final boolean addCircleMarker(String markerSet, String markerId, String label, String detail, String lineColorStr, double lineAlpha, String fillColorStr, double fillAlpha, int lineWidth, double x, double z, double radius) {
+        if (currentIntegration == null) {
+            return false;
+        }
+        Color lineColor = Color.decode(lineColorStr);
+        lineColor = new Color(lineColor.getRed(), lineColor.getGreen(), lineColor.getBlue(), (int)(lineAlpha * 255));
+        Color fillColor = Color.decode(fillColorStr);
+        fillColor = new Color(fillColor.getRed(), fillColor.getGreen(), fillColor.getBlue(), (int)(fillAlpha * 255));
+        return currentIntegration.addCircleMarker(markerSet, markerId, label, detail, lineColor, fillColor, lineWidth, x, z, radius);
+    }
+
+    @LuaFunction
+    public final boolean addRectangleMarker(String markerSet, String markerId, String label, String detail, String lineColorStr, double lineAlpha, String fillColorStr, double fillAlpha, int lineWidth, double x1, double z1, double x2, double z2) {
+        if (currentIntegration == null) {
+            return false;
+        }
+        Color lineColor = Color.decode(lineColorStr);
+        lineColor = new Color(lineColor.getRed(), lineColor.getGreen(), lineColor.getBlue(), (int)(lineAlpha * 255));
+        Color fillColor = Color.decode(fillColorStr);
+        fillColor = new Color(fillColor.getRed(), fillColor.getGreen(), fillColor.getBlue(), (int)(fillAlpha * 255));
+        return currentIntegration.addRectangleMarker(markerSet, markerId, label, detail, lineColor, fillColor, lineWidth, x1, z1, x2, z2);
+    }
+
+    // Arguments:
+    // 0: markerSet (String)
+    // 1: markerId (String)
+    // 2: label (String)
+    // 3: detail (String)
+    // 4: lineColor (String, RGBA hex code)
+    // 5: lineAlpha (double, 0.0-1.0)
+    // 6: fillColor (String, RGBA hex code)
+    // 7: fillAlpha (double, 0.0-1.0)
+    // 8: lineWidth (int)
+    // 9: points (table, interpreted as ArrayList<Vector3d>)
+    @LuaFunction
+    public final boolean addAreaMarker(IArguments arguments) {
+        if (currentIntegration == null) {
+            return false;
+        }
+        try {
+            String markerSet = arguments.getString(0);
+            String markerId = arguments.getString(1);
+            String label = arguments.getString(2);
+            String detail = arguments.getString(3);
+            Color lineColor = Color.decode(arguments.getString(4));
+            lineColor = new Color(lineColor.getRed(), lineColor.getGreen(), lineColor.getBlue(), (int)(arguments.getDouble(5) * 255));
+            Color fillColor = Color.decode(arguments.getString(6));
+            fillColor = new Color(fillColor.getRed(), fillColor.getGreen(), fillColor.getBlue(), (int)(arguments.getDouble(7) * 255));
+            int lineWidth = arguments.getInt(8);
+            ArrayList<Vector3d> points = IntegrationHelper.parsePoints(arguments.getTable(9));
+
+            return currentIntegration.addAreaMarker(markerSet, markerId, label, detail, lineColor, fillColor, lineWidth, points);
+        } catch (Exception e) {
+            ComputerCartographer.logException(e);
+        }
+        return false;
     }
 }

@@ -1,23 +1,29 @@
 package net.jonko0493.computercartographer.integration;
 
-import com.ibm.icu.util.Output;
-import dan200.computercraft.api.lua.IArguments;
+import com.flowpowered.math.vector.Vector2d;
+import com.flowpowered.math.vector.Vector3d;
 import de.bluecolored.bluemap.api.BlueMapAPI;
 import de.bluecolored.bluemap.api.BlueMapMap;
-import de.bluecolored.bluemap.api.markers.Marker;
-import de.bluecolored.bluemap.api.markers.MarkerSet;
-import de.bluecolored.bluemap.api.markers.POIMarker;
+import de.bluecolored.bluemap.api.markers.*;
+import de.bluecolored.bluemap.api.math.Color;
+import de.bluecolored.bluemap.api.math.Line;
+import de.bluecolored.bluemap.api.math.Shape;
 import net.jonko0493.computercartographer.ComputerCartographer;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class BlueMapIntegration implements IMapIntegration {
     private final String name = "bluemap";
     private BlueMapAPI api;
     private BlueMapMap currentMap;
     private boolean enabled = false;
+
+    private static Color convertFromAwt(java.awt.Color color) {
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() / 255.0f);
+    }
 
     @Override
     public boolean init() {
@@ -134,6 +140,8 @@ public class BlueMapIntegration implements IMapIntegration {
                 if (currentMap.getMarkerSets().containsKey(setName)) {
                     currentMap.getMarkerSets().get(setName).getMarkers().clear();
                     return currentMap.getMarkerSets().get(setName).getMarkers().isEmpty();
+                } else {
+                    ComputerCartographer.logWarning("Attempted to clear markers from non-existent set '" + setName + "'");
                 }
             } catch (Exception e) {
                 ComputerCartographer.logException(e);
@@ -158,6 +166,7 @@ public class BlueMapIntegration implements IMapIntegration {
                             } else {
                                 try (OutputStream out = currentMap.getAssetStorage().writeAsset(iconFileName)) {
                                     if (!IntegrationHelper.downloadAndResizeIcon(url, out)) {
+                                        ComputerCartographer.logWarning(("Failed to download icon for POI marker!"));
                                         return false;
                                     }
                                     realIcon = currentMap.getAssetStorage().getAssetUrl(iconFileName);
@@ -172,46 +181,28 @@ public class BlueMapIntegration implements IMapIntegration {
                         }
                     }
                     else {
-                        switch (icon.toLowerCase()) {
-                            case "turtle":
-                                break;
-                            case "computer":
-                                break;
-                            case "house":
-                                break;
-                            case "minecart":
-                                break;
-                            case "portal":
-                                break;
-                            case "diamond":
-                                break;
-                            case "world":
-                                break;
-                            default:
-                                String defaultName = "cc_" + icon.toLowerCase() + ".png";
-                                if (!icon.equalsIgnoreCase("default") && currentMap.getAssetStorage().assetExists(defaultName)) {
-                                    realIcon = currentMap.getAssetStorage().getAssetUrl(defaultName);
-                                }
+                        String iconName = "cc_" + icon.toLowerCase() + ".png";
+                        if (currentMap.getAssetStorage().assetExists(iconName)) {
+                            realIcon = currentMap.getAssetStorage().getAssetUrl(iconName);
+                        } else {
+                            ComputerCartographer.logWarning("Attempted to use icon " + icon + " which does not exist.");
                         }
                     }
-                    POIMarker marker;
+                    POIMarker.Builder markerBuilder = POIMarker.builder();
                     if (realIcon.isEmpty()) {
-                        marker = POIMarker.builder()
-                                .defaultIcon()
-                                .label(label)
-                                .detail(detail)
-                                .position(x, y, z)
-                                .build();
+                        markerBuilder.defaultIcon();
                     } else {
-                        marker = POIMarker.builder()
-                                .icon(realIcon, IntegrationHelper.ICON_WIDTH / 2, IntegrationHelper.ICON_HEIGHT / 2)
-                                .label(label)
-                                .detail(detail)
-                                .position(x, y, z)
-                                .build();
+                        markerBuilder.icon(realIcon, IntegrationHelper.ICON_WIDTH / 2, IntegrationHelper.ICON_HEIGHT / 2);
                     }
+                    POIMarker marker = markerBuilder
+                            .label(label)
+                            .detail(detail)
+                            .position(x, y, z)
+                            .build();
                     currentMap.getMarkerSets().get(markerSet).put(id, marker);
                     return true;
+                } else {
+                    ComputerCartographer.logWarning("Attempted to add POI marker to non-existent set '" + markerSet + "'");
                 }
             } catch (Exception e) {
                 ComputerCartographer.logException(e);
@@ -221,11 +212,29 @@ public class BlueMapIntegration implements IMapIntegration {
     }
 
     @Override
-    public boolean removePOIMarker(String markerSet, String id) {
+    public boolean addLineMarker(String markerSet, String id, String label, String detail, java.awt.Color color, int width, ArrayList<Vector3d> points) {
         if (enabled) {
             try {
                 markerSet = "cc_" + markerSet;
-                return currentMap.getMarkerSets().get(markerSet).remove(id) != null;
+                if (currentMap.getMarkerSets().containsKey(markerSet)) {
+                    Line.Builder lineBuilder = Line.builder();
+                    for (Vector3d point : points) {
+                        lineBuilder.addPoint(point);
+                    }
+                    LineMarker lineMarker = LineMarker.builder()
+                            .line(lineBuilder.build())
+                            .centerPosition()
+                            .label(label)
+                            .detail(detail)
+                            .lineColor(convertFromAwt(color))
+                            .lineWidth(width)
+                            .depthTestEnabled(false)
+                            .build();
+                    currentMap.getMarkerSets().get(markerSet).put(id, lineMarker);
+                    return true;
+                } else {
+                    ComputerCartographer.logWarning("Attempted to remove marker from non-existent set '" + markerSet + "'");
+                }
             } catch (Exception e) {
                 ComputerCartographer.logException(e);
             }
@@ -234,37 +243,123 @@ public class BlueMapIntegration implements IMapIntegration {
     }
 
     @Override
-    public boolean editPOIMarker() {
+    public boolean addCircleMarker(String markerSet, String id, String label, String detail, java.awt.Color lineColor, java.awt.Color fillColor, int lineWidth, double x, double z, double radius) {
+        if (enabled) {
+            try {
+                markerSet = "cc_" + markerSet;
+                if (currentMap.getMarkerSets().containsKey(markerSet)) {
+                    Shape circle = Shape.createCircle(x, z, radius, (int)Math.min(4, Math.max(200, radius)));
+                    ShapeMarker circleMarker = ShapeMarker.builder()
+                            .shape(circle, 63)
+                            .centerPosition()
+                            .label(label)
+                            .detail(detail)
+                            .lineColor(convertFromAwt(lineColor))
+                            .fillColor(convertFromAwt(fillColor))
+                            .lineWidth(lineWidth)
+                            .depthTestEnabled(false)
+                            .build();
+                    currentMap.getMarkerSets().get(markerSet).put(id, circleMarker);
+                    return true;
+                } else {
+                    ComputerCartographer.logWarning("Attempted to add circle marker to non-existent set '" + markerSet + "'");
+                }
+            } catch (Exception e) {
+                ComputerCartographer.logException(e);
+            }
+        }
         return false;
     }
 
     @Override
-    public boolean addAreaMarker() {
+    public boolean addRectangleMarker(String markerSet, String id, String label, String detail, java.awt.Color lineColor, java.awt.Color fillColor, int lineWidth, double x1, double z1, double x2, double z2) {
+        if (enabled) {
+            try {
+                markerSet = "cc_" + markerSet;
+                if (currentMap.getMarkerSets().containsKey(markerSet)) {
+                    Shape rectangle = Shape.createRect(x1, z1, x2, z2);
+                    ShapeMarker rectangleMarker = ShapeMarker.builder()
+                            .shape(rectangle, 63)
+                            .centerPosition()
+                            .label(label)
+                            .detail(detail)
+                            .lineColor(convertFromAwt(lineColor))
+                            .fillColor(convertFromAwt(fillColor))
+                            .lineWidth(lineWidth)
+                            .depthTestEnabled(false)
+                            .build();
+                    currentMap.getMarkerSets().get(markerSet).put(id, rectangleMarker);
+                    return true;
+                } else {
+                    ComputerCartographer.logWarning("Attempted to add rectangle marker to non-existent set '" + markerSet + "'");
+                }
+            } catch (Exception e) {
+                ComputerCartographer.logException(e);
+            }
+        }
         return false;
     }
 
     @Override
-    public boolean removeAreaMarker() {
+    public boolean addAreaMarker(String markerSet, String id, String label, String detail, java.awt.Color lineColor, java.awt.Color fillColor, int lineWidth, ArrayList<Vector3d> points) {
+        if (enabled) {
+            try {
+                markerSet = "cc_" + markerSet;
+                if (currentMap.getMarkerSets().containsKey(markerSet)) {
+                    Shape.Builder shapeBuilder = Shape.builder();
+                    for (Vector3d point : points) {
+                        shapeBuilder.addPoint(new Vector2d(point.getX(), point.getZ()));
+                    }
+                    // This is the only map plugin that can make a 3D shape, so we're going to
+                    // advantage of it. If all the y's are the same, we'll make a shape marker,
+                    // but if they differ at all it will be an extrude marker!
+                    if (points.stream().allMatch(p -> p.getY() == points.get(0).getY())) {
+                        ShapeMarker shapeMarker = ShapeMarker.builder()
+                                .shape(shapeBuilder.build(), (float) points.get(0).getY())
+                                .centerPosition()
+                                .label(label)
+                                .detail(detail)
+                                .lineColor(convertFromAwt(lineColor))
+                                .fillColor(convertFromAwt(fillColor))
+                                .lineWidth(lineWidth)
+                                .depthTestEnabled(false)
+                                .build();
+                        currentMap.getMarkerSets().get(markerSet).put(id, shapeMarker);
+                    } else {
+                        ExtrudeMarker extrudeMarker = ExtrudeMarker.builder()
+                                .shape(shapeBuilder.build(),
+                                        points.stream().map(Vector3d::getY).min(Double::compare).get().floatValue(),
+                                        points.stream().map(Vector3d::getY).max(Double::compare).get().floatValue())
+                                .centerPosition()
+                                .label(label)
+                                .detail(detail)
+                                .lineColor(convertFromAwt(lineColor))
+                                .fillColor(convertFromAwt(fillColor))
+                                .lineWidth(lineWidth)
+                                .depthTestEnabled(false)
+                                .build();
+                        currentMap.getMarkerSets().get(markerSet).put(id, extrudeMarker);
+                    }
+                } else {
+                    ComputerCartographer.logWarning("Attempted to add area marker to non-existent set '" + markerSet + "'");
+                }
+            } catch (Exception e) {
+                ComputerCartographer.logException(e);
+            }
+        }
         return false;
     }
 
     @Override
-    public boolean editAreaMarker() {
-        return false;
-    }
-
-    @Override
-    public boolean addLineMarker() {
-        return false;
-    }
-
-    @Override
-    public boolean editLineMarker() {
-        return false;
-    }
-
-    @Override
-    public boolean removeLineMarker() {
+    public boolean removeMarker(String markerSet, String id) {
+        if (enabled) {
+            try {
+                markerSet = "cc_" + markerSet;
+                return currentMap.getMarkerSets().get(markerSet).remove(id) != null;
+            } catch (Exception e) {
+                ComputerCartographer.logException(e);
+            }
+        }
         return false;
     }
 }
