@@ -62,6 +62,26 @@ components.java {
     }
 }
 
+tasks.register('moveFabricBuilds') {
+    doLast {
+        delete fileTree("../build/release").matching {
+            include "**/${rootProject.archives_base_name}-${rootProject.minecraft_version}-${rootProject.mod_version}-fabric*"
+        }
+        delete fileTree("../build/libs").matching {
+            include "**/${rootProject.archives_base_name}-${rootProject.minecraft_version}-${rootProject.mod_version}-fabric*"
+        }
+        delete fileTree("../build/latest").matching {
+            include "**/${rootProject.archives_base_name}-${rootProject.minecraft_version}-${rootProject.mod_version}-fabric*"
+        }
+        copy {
+            from "build/libs"
+            include "*${rootProject.mod_version}.jar"
+            into "../build/release"
+            rename "(.+)", "${rootProject.archives_base_name}-${rootProject.minecraft_version}-${rootProject.mod_version}-fabric.jar"
+        }
+    }
+}
+
 publishing {
     publications {
         mavenFabric(MavenPublication) {
@@ -73,5 +93,13 @@ publishing {
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
         // Add repositories to publish to here.
+    }
+}
+
+afterEvaluate {
+    for (def task in it.tasks) {
+        if (task == tasks.build) {
+            task.finalizedBy tasks.moveFabricBuilds
+        }
     }
 }

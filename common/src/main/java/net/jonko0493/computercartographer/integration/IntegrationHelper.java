@@ -20,6 +20,9 @@ public class IntegrationHelper {
     public static boolean downloadAndResizeIcon(URL url, OutputStream output) {
         try {
             BufferedImage icon = ImageIO.read(url);
+            if (icon == null) {
+                return false;
+            }
             BufferedImage resizedIcon = new BufferedImage(ICON_WIDTH, ICON_HEIGHT, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = resizedIcon.createGraphics();
             g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));

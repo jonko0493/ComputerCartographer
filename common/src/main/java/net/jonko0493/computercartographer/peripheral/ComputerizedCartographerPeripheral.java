@@ -58,7 +58,14 @@ public class ComputerizedCartographerPeripheral implements IPeripheral {
 
     @LuaFunction
     public final void refreshIntegrations() {
+
         ComputerCartographer.initIntegrations();
+        if (!ComputerCartographer.integrations.contains(currentIntegration)) {
+            currentIntegration = null;
+        }
+        if (ComputerCartographer.integrations.size() == 1) {
+            currentIntegration = ComputerCartographer.integrations.get(0);
+        }
     }
 
     @LuaFunction

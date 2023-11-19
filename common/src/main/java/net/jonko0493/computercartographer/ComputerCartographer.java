@@ -78,6 +78,7 @@ public class ComputerCartographer
 
 	public static void initIntegrations() {
 		Log.atInfo().log("Attempting to add computer cartographer integrations...");
+		integrations.clear();
 		if (Platform.isModLoaded("bluemap")) {
 			BlueMapIntegration blueMapIntegration = new BlueMapIntegration();
 			if (blueMapIntegration.init()) {
