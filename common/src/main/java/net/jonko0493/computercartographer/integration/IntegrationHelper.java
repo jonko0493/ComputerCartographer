@@ -2,16 +2,21 @@ package net.jonko0493.computercartographer.integration;
 
 import com.flowpowered.math.vector.Vector3d;
 import dev.architectury.event.events.client.ClientTooltipEvent;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.jonko0493.computercartographer.ComputerCartographer;
+import net.minecraft.server.MinecraftServer;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 public class IntegrationHelper {
     public static final int ICON_WIDTH = 24;
@@ -35,6 +40,22 @@ public class IntegrationHelper {
             ComputerCartographer.logException(e);
         }
         return false;
+    }
+
+    public static ArrayList<String> getDirectoriesWithRegionDirectory(File dir) {
+        ArrayList<String> matches = new ArrayList<>();
+        return getDirectoriesWithRegionDirectory(dir, matches);
+    }
+    public static ArrayList<String> getDirectoriesWithRegionDirectory(File dir, ArrayList<String> matches) {
+        File[] ls = dir.listFiles();
+        for (File file : Objects.requireNonNull(ls)) {
+            if (file.isDirectory() && file.getName().equals("region")) {
+                matches.add(file.getParentFile().getName());
+            } else if (file.isDirectory()) {
+                getDirectoriesWithRegionDirectory(file, matches);
+            }
+        }
+        return matches;
     }
 
     public static Vector3d parsePoint(Map<?, ?> table) {
