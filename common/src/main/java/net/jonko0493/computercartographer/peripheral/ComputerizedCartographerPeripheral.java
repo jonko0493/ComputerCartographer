@@ -1,6 +1,5 @@
 package net.jonko0493.computercartographer.peripheral;
 
-import com.flowpowered.math.vector.Vector3d;
 import dan200.computercraft.api.lua.IArguments;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.IComputerAccess;
@@ -10,6 +9,7 @@ import net.jonko0493.computercartographer.block.ComputerizedCartographerBlockEnt
 import net.jonko0493.computercartographer.integration.IMapIntegration;
 import net.jonko0493.computercartographer.integration.IntegrationHelper;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3d;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -187,7 +187,7 @@ public class ComputerizedCartographerPeripheral implements IPeripheral {
     // 1: markerId (String)
     // 2: label (String)
     // 3: detail (String)
-    // 4: color (String, RGBA hex code)
+    // 4: color (String, RGB hex code)
     // 5: color alpha (double, 0.0-1.0)
     // 6: width (int)
     // 7: points (table, interpreted as ArrayList<Vector3d>)
@@ -214,7 +214,7 @@ public class ComputerizedCartographerPeripheral implements IPeripheral {
     }
 
     @LuaFunction
-    public final boolean addCircleMarker(String markerSet, String markerId, String label, String detail, String lineColorStr, double lineAlpha, String fillColorStr, double fillAlpha, int lineWidth, double x, double z, double radius) {
+    public final boolean addCircleMarker(String markerSet, String markerId, String label, String detail, String lineColorStr, double lineAlpha, String fillColorStr, double fillAlpha, int lineWidth, double x, double y, double z, double radius) {
         if (currentIntegration == null) {
             return false;
         }
@@ -222,7 +222,7 @@ public class ComputerizedCartographerPeripheral implements IPeripheral {
         lineColor = new Color(lineColor.getRed(), lineColor.getGreen(), lineColor.getBlue(), (int)(lineAlpha * 255));
         Color fillColor = Color.decode(fillColorStr);
         fillColor = new Color(fillColor.getRed(), fillColor.getGreen(), fillColor.getBlue(), (int)(fillAlpha * 255));
-        return currentIntegration.addCircleMarker(markerSet, markerId, label, detail, lineColor, fillColor, lineWidth, x, z, radius);
+        return currentIntegration.addCircleMarker(markerSet, markerId, label, detail, lineColor, fillColor, lineWidth, x, y, z, radius);
     }
 
     @LuaFunction

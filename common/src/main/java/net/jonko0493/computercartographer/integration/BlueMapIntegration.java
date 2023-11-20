@@ -212,14 +212,14 @@ public class BlueMapIntegration implements IMapIntegration {
     }
 
     @Override
-    public boolean addLineMarker(String markerSet, String id, String label, String detail, java.awt.Color color, int width, ArrayList<Vector3d> points) {
+    public boolean addLineMarker(String markerSet, String id, String label, String detail, java.awt.Color color, int width, ArrayList<org.joml.Vector3d> points) {
         if (enabled) {
             try {
                 markerSet = "cc_" + markerSet;
                 if (currentMap.getMarkerSets().containsKey(markerSet)) {
                     Line.Builder lineBuilder = Line.builder();
-                    for (Vector3d point : points) {
-                        lineBuilder.addPoint(point);
+                    for (org.joml.Vector3d point : points) {
+                        lineBuilder.addPoint(new Vector3d(point.x, point.y, point.z));
                     }
                     LineMarker lineMarker = LineMarker.builder()
                             .line(lineBuilder.build())
@@ -243,14 +243,14 @@ public class BlueMapIntegration implements IMapIntegration {
     }
 
     @Override
-    public boolean addCircleMarker(String markerSet, String id, String label, String detail, java.awt.Color lineColor, java.awt.Color fillColor, int lineWidth, double x, double z, double radius) {
+    public boolean addCircleMarker(String markerSet, String id, String label, String detail, java.awt.Color lineColor, java.awt.Color fillColor, int lineWidth, double x, double y, double z, double radius) {
         if (enabled) {
             try {
                 markerSet = "cc_" + markerSet;
                 if (currentMap.getMarkerSets().containsKey(markerSet)) {
                     Shape circle = Shape.createCircle(x, z, radius, (int)Math.max(10, Math.min(100, radius)));
                     ShapeMarker circleMarker = ShapeMarker.builder()
-                            .shape(circle, 63)
+                            .shape(circle, (float)y)
                             .centerPosition()
                             .label(label)
                             .detail(detail)
@@ -301,21 +301,21 @@ public class BlueMapIntegration implements IMapIntegration {
     }
 
     @Override
-    public boolean addAreaMarker(String markerSet, String id, String label, String detail, java.awt.Color lineColor, java.awt.Color fillColor, int lineWidth, ArrayList<Vector3d> points) {
+    public boolean addAreaMarker(String markerSet, String id, String label, String detail, java.awt.Color lineColor, java.awt.Color fillColor, int lineWidth, ArrayList<org.joml.Vector3d> points) {
         if (enabled) {
             try {
                 markerSet = "cc_" + markerSet;
                 if (currentMap.getMarkerSets().containsKey(markerSet)) {
                     Shape.Builder shapeBuilder = Shape.builder();
-                    for (Vector3d point : points) {
-                        shapeBuilder.addPoint(new Vector2d(point.getX(), point.getZ()));
+                    for (org.joml.Vector3d point : points) {
+                        shapeBuilder.addPoint(new Vector2d(point.x, point.z));
                     }
                     // This is the only map plugin that can make a 3D shape, so we're going to
                     // advantage of it. If all the y's are the same, we'll make a shape marker,
                     // but if they differ at all it will be an extrude marker!
-                    if (points.stream().allMatch(p -> p.getY() == points.get(0).getY())) {
+                    if (points.stream().allMatch(p -> p.y == points.get(0).y)) {
                         ShapeMarker shapeMarker = ShapeMarker.builder()
-                                .shape(shapeBuilder.build(), (float) points.get(0).getY())
+                                .shape(shapeBuilder.build(), (float) points.get(0).y)
                                 .centerPosition()
                                 .label(label)
                                 .detail(detail)
@@ -329,8 +329,8 @@ public class BlueMapIntegration implements IMapIntegration {
                     } else {
                         ExtrudeMarker extrudeMarker = ExtrudeMarker.builder()
                                 .shape(shapeBuilder.build(),
-                                        points.stream().map(Vector3d::getY).min(Double::compare).get().floatValue(),
-                                        points.stream().map(Vector3d::getY).max(Double::compare).get().floatValue())
+                                        points.stream().map(v -> v.y).min(Double::compare).get().floatValue(),
+                                        points.stream().map(v -> v.y).max(Double::compare).get().floatValue())
                                 .centerPosition()
                                 .label(label)
                                 .detail(detail)

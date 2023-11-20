@@ -1,6 +1,6 @@
 package net.jonko0493.computercartographer.integration;
 
-import com.flowpowered.math.vector.Vector3d;
+import org.joml.Vector3d;
 import net.jonko0493.computercartographer.ComputerCartographer;
 import xyz.jpenilla.squaremap.api.Squaremap;
 import xyz.jpenilla.squaremap.api.SquaremapProvider;
@@ -76,7 +76,7 @@ public class SquaremapIntegration implements IMapIntegration {
     }
 
     @Override
-    public boolean addCircleMarker(String markerSet, String id, String label, String detail, Color lineColor, Color fillColor, int lineWidth, double x, double z, double radius) {
+    public boolean addCircleMarker(String markerSet, String id, String label, String detail, Color lineColor, Color fillColor, int lineWidth, double x, double y, double z, double radius) {
         return false;
     }
 

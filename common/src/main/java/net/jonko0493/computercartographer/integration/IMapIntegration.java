@@ -1,6 +1,6 @@
 package net.jonko0493.computercartographer.integration;
 
-import com.flowpowered.math.vector.Vector3d;
+import org.joml.Vector3d;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public interface IMapIntegration {
     boolean clearMarkerSet(String setName);
     boolean addPOIMarker(String markerSet, String id, String label, String detail, String icon, double x, double y, double z);
     boolean addLineMarker(String markerSet, String id, String label, String detail, Color color, int width, ArrayList<Vector3d> points);
-    boolean addCircleMarker(String markerSet, String id, String label, String detail, Color lineColor, Color fillColor, int lineWidth, double x, double z, double radius);
+    boolean addCircleMarker(String markerSet, String id, String label, String detail, Color lineColor, Color fillColor, int lineWidth, double x, double y, double z, double radius);
     boolean addRectangleMarker(String markerSet, String id, String label, String detail, Color lineColor, Color fillColor, int lineWidth, double x1, double z1, double x2, double z2);
     boolean addAreaMarker(String markerSet, String id, String label, String detail, Color lineColor, Color fillColor, int lineWidth, ArrayList<Vector3d> points);
     boolean removeMarker(String markerSet, String id);
