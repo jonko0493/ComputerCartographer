@@ -35,7 +35,7 @@ public class ComputerCartographer
 	}
 	public static void logException(Exception e) {
 		Log.error(e.getMessage());
-		Log.error(Arrays.toString(e.getStackTrace()));
+		Log.error(String.join("\n", Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new)));
 	}
 
 	public static DeferredRegister<Item> ITEMS = DeferredRegister.create(MOD_ID, RegistryKeys.ITEM);

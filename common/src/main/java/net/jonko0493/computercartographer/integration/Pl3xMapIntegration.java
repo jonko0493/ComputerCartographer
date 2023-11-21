@@ -184,7 +184,7 @@ public class Pl3xMapIntegration implements IMapIntegration {
                 Collection<Point> pl3xPoints = points.stream().map(p -> new Point((int)p.x, (int)p.z)).toList();
                 Polyline lineMarker = new Polyline(id, pl3xPoints);
                 lineMarker.setOptions(new Options.Builder()
-                        .popupContent(label + "\n" + detail)
+                        .popupContent("<div>" + label + "</div>" + detail)
                         .tooltipContent(label)
                         .strokeColor(color.getRGB())
                         .strokeWeight(width)
@@ -205,7 +205,7 @@ public class Pl3xMapIntegration implements IMapIntegration {
                 markerSet = "cc_" + markerSet;
                 Circle circleMarker = new Circle(id, x, z, radius);
                 circleMarker.setOptions(new Options.Builder()
-                        .popupContent(label + "\n" + detail)
+                        .popupContent("<div>" + label + "</div>" + detail)
                         .tooltipContent(label)
                         .strokeColor(lineColor.getRGB())
                         .strokeWeight(lineWidth)
@@ -227,7 +227,7 @@ public class Pl3xMapIntegration implements IMapIntegration {
                 markerSet = "cc_" + markerSet;
                 Rectangle rectMarker = new Rectangle(id, x1, z1, x2, z2);
                 rectMarker.setOptions(new Options.Builder()
-                        .popupContent(label + "\n" + detail)
+                        .popupContent("<div>" + label + "</div>" + detail)
                         .tooltipContent(label)
                         .strokeColor(lineColor.getRGB())
                         .strokeWeight(lineWidth)
@@ -251,7 +251,7 @@ public class Pl3xMapIntegration implements IMapIntegration {
                 Polyline line = new Polyline(id, pl3xPoints);
                 Polygon polygonMarker = new Polygon(id, line);
                 polygonMarker.setOptions(new Options.Builder()
-                        .popupContent(label + "\n" + detail)
+                        .popupContent("<div>" + label + "</div>" + detail)
                         .tooltipContent(label)
                         .strokeColor(lineColor.getRGB())
                         .strokeWeight(lineWidth)
