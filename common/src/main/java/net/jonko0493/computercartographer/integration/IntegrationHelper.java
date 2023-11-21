@@ -2,6 +2,7 @@ package net.jonko0493.computercartographer.integration;
 
 import net.jonko0493.computercartographer.ComputerCartographer;
 import org.joml.Vector3d;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,7 +17,11 @@ public class IntegrationHelper {
     public static final int ICON_WIDTH = 24;
     public static final int ICON_HEIGHT = 24;
 
-    private static BufferedImage downloadAndResizeIconPrivate(URL url) {
+    public static String sanitizeHtml(String html) {
+        return StringEscapeUtils.escapeHtml4(html);
+    }
+
+    public static BufferedImage downloadAndResizeIconBufferedImage(URL url) {
         try {
             BufferedImage icon = ImageIO.read(url);
             if (icon == null) {
@@ -34,7 +39,7 @@ public class IntegrationHelper {
     }
 
     public static InputStream downloadAndResizeIcon(URL url) {
-        BufferedImage resizedIcon = downloadAndResizeIconPrivate(url);
+        BufferedImage resizedIcon = downloadAndResizeIconBufferedImage(url);
         if (resizedIcon != null) {
             try {
                 ByteArrayOutputStream outStream = new ByteArrayOutputStream();
@@ -49,7 +54,7 @@ public class IntegrationHelper {
 
     public static boolean downloadAndResizeIcon(URL url, OutputStream output) {
         try {
-            BufferedImage resizedIcon = downloadAndResizeIconPrivate(url);
+            BufferedImage resizedIcon = downloadAndResizeIconBufferedImage(url);
             if (resizedIcon != null) {
                 ImageIO.write(resizedIcon, "png", output);
                 output.flush();

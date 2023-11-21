@@ -161,8 +161,8 @@ public class ComputerizedCartographerPeripheral implements IPeripheral {
         try {
             String markerSet = arguments.getString(0);
             String markerId = arguments.getString(1);
-            String label = arguments.getString(2);
-            String detail = arguments.getString(3);
+            String label = IntegrationHelper.sanitizeHtml(arguments.getString(2));
+            String detail = IntegrationHelper.sanitizeHtml(arguments.getString(3));
             double x = arguments.getDouble(4);
             double y = arguments.getDouble(5);
             double z = arguments.getDouble(6);
@@ -199,8 +199,8 @@ public class ComputerizedCartographerPeripheral implements IPeripheral {
         try {
             String markerSet = arguments.getString(0);
             String markerId = arguments.getString(1);
-            String label = arguments.getString(2);
-            String detail = arguments.getString(3);
+            String label = IntegrationHelper.sanitizeHtml(arguments.getString(2));
+            String detail = IntegrationHelper.sanitizeHtml(arguments.getString(3));
             Color color = Color.decode(arguments.getString(4));
             color = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int)(arguments.getDouble(5) * 255));
             int width = arguments.getInt(6);
@@ -222,7 +222,7 @@ public class ComputerizedCartographerPeripheral implements IPeripheral {
         lineColor = new Color(lineColor.getRed(), lineColor.getGreen(), lineColor.getBlue(), (int)(lineAlpha * 255));
         Color fillColor = Color.decode(fillColorStr);
         fillColor = new Color(fillColor.getRed(), fillColor.getGreen(), fillColor.getBlue(), (int)(fillAlpha * 255));
-        return currentIntegration.addCircleMarker(markerSet, markerId, label, detail, lineColor, fillColor, lineWidth, x, y, z, radius);
+        return currentIntegration.addCircleMarker(markerSet, markerId, IntegrationHelper.sanitizeHtml(label), IntegrationHelper.sanitizeHtml(detail), lineColor, fillColor, lineWidth, x, y, z, radius);
     }
 
     @LuaFunction
@@ -234,7 +234,7 @@ public class ComputerizedCartographerPeripheral implements IPeripheral {
         lineColor = new Color(lineColor.getRed(), lineColor.getGreen(), lineColor.getBlue(), (int)(lineAlpha * 255));
         Color fillColor = Color.decode(fillColorStr);
         fillColor = new Color(fillColor.getRed(), fillColor.getGreen(), fillColor.getBlue(), (int)(fillAlpha * 255));
-        return currentIntegration.addRectangleMarker(markerSet, markerId, label, detail, lineColor, fillColor, lineWidth, x1, z1, x2, z2);
+        return currentIntegration.addRectangleMarker(markerSet, markerId, IntegrationHelper.sanitizeHtml(label), IntegrationHelper.sanitizeHtml(detail), lineColor, fillColor, lineWidth, x1, z1, x2, z2);
     }
 
     // Arguments:
@@ -256,8 +256,8 @@ public class ComputerizedCartographerPeripheral implements IPeripheral {
         try {
             String markerSet = arguments.getString(0);
             String markerId = arguments.getString(1);
-            String label = arguments.getString(2);
-            String detail = arguments.getString(3);
+            String label = IntegrationHelper.sanitizeHtml(arguments.getString(2));
+            String detail = IntegrationHelper.sanitizeHtml(arguments.getString(3));
             Color lineColor = Color.decode(arguments.getString(4));
             lineColor = new Color(lineColor.getRed(), lineColor.getGreen(), lineColor.getBlue(), (int)(arguments.getDouble(5) * 255));
             Color fillColor = Color.decode(arguments.getString(6));
