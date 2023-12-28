@@ -128,6 +128,17 @@ public class SquaremapIntegration implements IMapIntegration {
     }
 
     @Override
+    public Map<?, ?> getMarkers(String setName, boolean cartographerCreated) {
+        if (enabled) {
+            Map<String, String> errorMessage = new HashMap<>();
+            errorMessage.put("Integration unsupported", "Squaremap's API architecture is not conducive to retrieving the markers in a set. Please " +
+                    "keep track of the markers you create in your own program.");
+            return  errorMessage;
+        }
+        return null;
+    }
+
+    @Override
     public boolean clearMarkerSet(String setName) {
         if (enabled) {
             try {

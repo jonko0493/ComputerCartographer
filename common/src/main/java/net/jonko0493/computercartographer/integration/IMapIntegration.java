@@ -4,6 +4,7 @@ import org.joml.Vector3d;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface IMapIntegration {
     boolean init();
@@ -14,6 +15,7 @@ public interface IMapIntegration {
     boolean addMarkerSet(String setName, String label);
     boolean removeMarkerSet(String setName);
     String[] getMarkerSets();
+    Map<?, ?> getMarkers(String setName, boolean cartographerCreated);
     boolean clearMarkerSet(String setName);
     boolean addPOIMarker(String markerSet, String id, String label, String detail, String icon, double x, double y, double z);
     boolean addLineMarker(String markerSet, String id, String label, String detail, Color color, int width, ArrayList<Vector3d> points);

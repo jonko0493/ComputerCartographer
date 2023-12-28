@@ -14,6 +14,9 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class BlueMapIntegration implements IMapIntegration {
     private final String name = "bluemap";
@@ -125,6 +128,43 @@ public class BlueMapIntegration implements IMapIntegration {
                         .filter(s -> s.startsWith("cc_"))
                         .map(s -> s.substring(3))
                         .toArray(String[]::new);
+            } catch (Exception e) {
+                ComputerCartographer.logException(e);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Map<?, ?> getMarkers(String setName, boolean cartographerCreated) {
+        if (enabled) {
+            try {
+                if (cartographerCreated) {
+                    setName = "cc_" + setName;
+                }
+                if (currentMap.getMarkerSets().containsKey(setName)) {
+                    Map<Integer, Object> table = new HashMap<>();
+                    Map<String, Marker> markers = currentMap.getMarkerSets().get(setName).getMarkers();
+                    int i = 1;
+                    for (String id : markers.keySet()) {
+                        Map<String, Object> markerTable = new HashMap<>();
+                        Marker marker = markers.get(id);
+                        markerTable.put("id", id);
+                        markerTable.put("type", marker.getType());
+                        markerTable.put("label", marker.getLabel());
+                        Map<String, Double> position = new HashMap<>();
+                        position.put("x", marker.getPosition().getX());
+                        position.put("y", marker.getPosition().getY());
+                        position.put("z", marker.getPosition().getZ());
+                        markerTable.put("position", position);
+
+                        table.put(i++, markerTable);
+                    }
+
+                    return table;
+                } else {
+                    return null;
+                }
             } catch (Exception e) {
                 ComputerCartographer.logException(e);
             }

@@ -18,7 +18,7 @@ public class IntegrationHelper {
     public static final int ICON_HEIGHT = 24;
 
     public static String sanitizeHtml(String html) {
-        return StringEscapeUtils.escapeHtml4(html);
+        return StringEscapeUtils.escapeHtml4(html).replace("\n", "<br/>");
     }
 
     public static BufferedImage downloadAndResizeIconBufferedImage(URL url) {

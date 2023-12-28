@@ -12,8 +12,7 @@ import org.joml.Vector3d;
 import java.awt.*;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 public class DynmapIntegration implements IMapIntegration {
     private final String name = "dynmap";
@@ -115,6 +114,40 @@ public class DynmapIntegration implements IMapIntegration {
                         .filter(s -> s.startsWith("cc_"))
                         .map(m -> m.substring(3))
                         .toArray(String[]::new);
+            } catch (Exception e) {
+                ComputerCartographer.logException(e);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Map<?, ?> getMarkers(String setName, boolean cartographerCreated) {
+        if (enabled) {
+            try {
+                if (cartographerCreated) {
+                    setName = "cc_" + setName;
+                }
+                Marker[] markerSet = markerAPI.getMarkerSet(setName).getMarkers().toArray(Marker[]::new);
+                Map<Integer, Object> table = new HashMap<>();
+
+                for (int i = 0; i < markerSet.length; i++) {
+                    Map<String, Object> markerTable = new HashMap<>();
+                    Marker marker = markerSet[i];
+
+                    markerTable.put("id", marker.getMarkerID());
+                    markerTable.put("type", "DynmapMarker");
+                    markerTable.put("label", marker.getLabel());
+                    Map<String, Double> position = new HashMap<>();
+                    position.put("x", marker.getX());
+                    position.put("y", marker.getY());
+                    position.put("z", marker.getZ());
+                    markerTable.put("position", position);
+
+                    table.put(i + 1, markerTable);
+                }
+
+                return table;
             } catch (Exception e) {
                 ComputerCartographer.logException(e);
             }

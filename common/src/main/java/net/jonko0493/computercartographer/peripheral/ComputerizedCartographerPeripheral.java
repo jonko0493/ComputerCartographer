@@ -13,6 +13,7 @@ import org.joml.Vector3d;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ComputerizedCartographerPeripheral implements IPeripheral {
@@ -134,6 +135,26 @@ public class ComputerizedCartographerPeripheral implements IPeripheral {
             return null;
         }
         return currentIntegration.getMarkerSets();
+    }
+
+    // Arguments:
+    // 0: markerSet (String)
+    // 1: cartographerCreated (boolean, optional, default true)
+    // Returns a table of marker data, specifically an array of the following marker "objects":
+    // { "id": markerId, "type": markerType, "label": markerLabel, "position": markerPosition }
+    @LuaFunction
+    public final Map<?, ?> getMarkers(IArguments arguments) {
+        if (currentIntegration == null) {
+            return null;
+        }
+        try {
+            String setName = arguments.getString(0);
+            boolean cartographerCreated = arguments.optBoolean(1, true);
+            return currentIntegration.getMarkers(setName, cartographerCreated);
+        } catch (Exception e) {
+            ComputerCartographer.logException(e);
+        }
+        return null;
     }
 
     @LuaFunction
